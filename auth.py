@@ -11,6 +11,7 @@ def decode_api_key(api_key: str) -> Dict:
     Decode the API key to extract configuration parameters.
     The API key should be a JWT token containing:
     - total_records: Total number of records to mock
+    - response_delay: Delay in seconds for each API response (default: 0.01)
     """
     try:
         secret = os.getenv("JWT_SECRET", "your-secret-key-change-in-production")

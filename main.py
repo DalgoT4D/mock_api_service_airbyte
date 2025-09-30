@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Query, Depends, HTTPException
 from typing import Dict, Optional
 import math
+import asyncio
 from dotenv import load_dotenv
 
 from auth import get_api_key_data
@@ -29,15 +30,19 @@ def root():
     }
 
 @app.get("/api/students", response_model=PaginatedResponse)
-def get_students(
+async def get_students(
     page: int = Query(1, ge=1, description="Page number"),
-    page_size: int = Query(10, ge=1, le=100, description="Items per page"),
+    page_size: int = Query(10, ge=1, le=1000, description="Items per page"),
     api_key_data: Dict = Depends(get_api_key_data)
 ):
     """
     Get paginated list of students.
     Requires API key authentication.
     """
+    # Add configurable delay
+    response_delay = api_key_data.get("response_delay", 0.01)
+    await asyncio.sleep(response_delay)
+    
     total_records = api_key_data.get("total_records", 100)
     total_pages = math.ceil(total_records / page_size)
     
@@ -59,15 +64,19 @@ def get_students(
     )
 
 @app.get("/api/schools", response_model=PaginatedResponse)
-def get_schools(
+async def get_schools(
     page: int = Query(1, ge=1, description="Page number"),
-    page_size: int = Query(10, ge=1, le=100, description="Items per page"),
+    page_size: int = Query(10, ge=1, le=1000, description="Items per page"),
     api_key_data: Dict = Depends(get_api_key_data)
 ):
     """
     Get paginated list of schools.
     Requires API key authentication.
     """
+    # Add configurable delay
+    response_delay = api_key_data.get("response_delay", 0.01)
+    await asyncio.sleep(response_delay)
+    
     total_records = api_key_data.get("total_records", 100)
     total_pages = math.ceil(total_records / page_size)
     
@@ -89,15 +98,19 @@ def get_schools(
     )
 
 @app.get("/api/villages", response_model=PaginatedResponse)
-def get_villages(
+async def get_villages(
     page: int = Query(1, ge=1, description="Page number"),
-    page_size: int = Query(10, ge=1, le=100, description="Items per page"),
+    page_size: int = Query(10, ge=1, le=1000, description="Items per page"),
     api_key_data: Dict = Depends(get_api_key_data)
 ):
     """
     Get paginated list of villages.
     Requires API key authentication.
     """
+    # Add configurable delay
+    response_delay = api_key_data.get("response_delay", 0.01)
+    await asyncio.sleep(response_delay)
+    
     total_records = api_key_data.get("total_records", 100)
     total_pages = math.ceil(total_records / page_size)
     

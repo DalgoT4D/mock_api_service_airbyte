@@ -9,6 +9,7 @@ A FastAPI-based mock service with JWT-based API key authentication and paginatio
 - **Pagination Support**: Query parameters for flexible data retrieval
 - **Consistent Mock Data**: Stable IDs using hash-based generation
 - **Configurable Total Records**: Set via API key payload
+- **Configurable Response Delay**: Control API response time via API key
 - **No Database Required**: All data generated on-the-fly
 - **Out-of-Range Handling**: Returns `null` for pages beyond available data
 
@@ -35,6 +36,7 @@ JWT_SECRET=your-secret-key-change-in-production
 
 API keys are JWT tokens containing:
 - `total_records`: Total number of records to mock (determines dataset size)
+- `response_delay`: Delay in seconds for each API response (default: 0.01)
 - `exp`: Token expiration timestamp
 - `iat`: Token issued at timestamp
 - `sub`: Subject identifier
@@ -57,11 +59,14 @@ The service will be available at:
 ## Generating API Keys
 
 ```bash
-# Generate with default 100 records
+# Generate with defaults (100 records, 0.01s delay)
 uv run python generate_api_key.py
 
 # Generate with custom record count
 uv run python generate_api_key.py 500
+
+# Generate with custom record count and response delay
+uv run python generate_api_key.py 500 0.5  # 500 records, 0.5 second delay
 
 # Example output:
 # ============================================================
@@ -145,7 +150,7 @@ All endpoints support pagination with:
 
 **Query Parameters:**
 - `page`: Page number (default: 1, min: 1)
-- `page_size`: Items per page (default: 10, min: 1, max: 100)
+- `page_size`: Items per page (default: 10, min: 1, max: 1000)
 
 **Response Format:**
 
